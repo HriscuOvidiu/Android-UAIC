@@ -3,6 +3,7 @@ package com.example.lab2;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,9 +15,20 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.lab2.models.Product;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -104,11 +116,22 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.contact:
                 visitContactPage();
+                break;
+            case R.id.preferences:
+                visitPreferencePage();
+                break;
+            case R.id.write:
+                writeFile("myFile", "myBody");
+                break;
+            case R.id.read:
+                readFile("myFile");
+                break;
         }
 
         return true;
@@ -118,6 +141,47 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Contact.class);
 
         startActivity(intent);
+    }
+
+    private void visitPreferencePage() {
+        Intent intent = new Intent(this, Preferences.class);
+
+        startActivity(intent);
+    }
+
+    private void writeFile(String filename, String body) {
+        try{
+            File ffile = new File(this.getFilesDir(), filename);
+            FileWriter writer = new FileWriter(ffile);
+            writer.append(body);
+            writer.flush();
+            writer.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        Toast.makeText(getApplicationContext(), "File written to disk successfully", Toast.LENGTH_SHORT).show();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void readFile(String filename) {
+        try {
+            FileInputStream fis = this.openFileInput(filename);
+            InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
+            BufferedReader bufferedReader = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
+
+            Toast.makeText(getApplicationContext(), sb.toString(), Toast.LENGTH_SHORT).show();
+        } catch (FileNotFoundException e) {
+            return;
+        } catch (UnsupportedEncodingException e) {
+            return;
+        } catch (IOException e) {
+            return;
+        }
     }
 
     @Override

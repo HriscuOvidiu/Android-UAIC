@@ -5,4 +5,13 @@
     <item
         android:id="@+id/contact"
         android:title="Contact" />
+    <item
+        android:id="@+id/preferences"
+        android:title="Preferences" />
+    <item
+        android:id="@+id/write"
+        android:title="Write file to disk" />
+    <item
+        android:id="@+id/read"
+        android:title="Read file from disk" />
 </menu>
