@@ -121,10 +121,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.contact:
-                visitContactPage();
+                visitPage(Contact.class);
                 break;
             case R.id.preferences:
-                visitPreferencePage();
+                visitPage(Preferences.class);
                 break;
             case R.id.write:
                 writeFile("myFile", "myBody");
@@ -132,19 +132,16 @@ public class MainActivity extends AppCompatActivity {
             case R.id.read:
                 readFile("myFile");
                 break;
+            case R.id.check_sensors:
+                visitPage(CheckSensors.class);
+                break;
         }
 
         return true;
     }
 
-    private void visitContactPage() {
-        Intent intent = new Intent(this, Contact.class);
-
-        startActivity(intent);
-    }
-
-    private void visitPreferencePage() {
-        Intent intent = new Intent(this, Preferences.class);
+    private void visitPage(Class c) {
+        Intent intent = new Intent(this, c);
 
         startActivity(intent);
     }

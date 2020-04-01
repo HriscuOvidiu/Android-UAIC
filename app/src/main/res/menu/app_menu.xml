@@ -14,4 +14,7 @@
     <item
         android:id="@+id/read"
         android:title="Read file from disk" />
+    <item
+        android:id="@+id/check-sensors"
+        android:title="Check Sensors" />
 </menu>
